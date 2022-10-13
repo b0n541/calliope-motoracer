@@ -2,11 +2,15 @@ input.onButtonEvent(Button.A, input.buttonEventClick(), function () {
     auto.change(LedSpriteProperty.X, -1)
 })
 function spielende () {
+    game.pause()
     basic.showIcon(IconNames.Sad)
     basic.showIcon(IconNames.Confused)
     basic.showIcon(IconNames.Sad)
-    basic.pause(500)
+    basic.pause(1000)
+    basic.showNumber(game.score())
     geschwindigkeit = 500
+    game.setScore(0)
+    game.resume()
 }
 input.onButtonEvent(Button.B, input.buttonEventClick(), function () {
     auto.change(LedSpriteProperty.X, 1)
@@ -16,6 +20,7 @@ let geschwindigkeit = 0
 let auto: game.LedSprite = null
 auto = game.createSprite(2, 4)
 geschwindigkeit = 500
+game.setScore(0)
 basic.forever(function () {
     hindernis = game.createSprite(randint(0, 4), 0)
     basic.pause(geschwindigkeit)
@@ -27,5 +32,8 @@ basic.forever(function () {
         }
     }
     hindernis.delete()
+    game.pause()
+    game.addScore(1)
+    game.resume()
     geschwindigkeit += -20
 })
