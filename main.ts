@@ -1,3 +1,7 @@
+function spielStart () {
+    geschwindigkeit = 20
+    game.setScore(0)
+}
 input.onButtonEvent(Button.A, input.buttonEventClick(), function () {
     auto.change(LedSpriteProperty.X, -1)
 })
@@ -8,9 +12,12 @@ function spielende () {
     basic.showIcon(IconNames.Sad)
     basic.pause(1000)
     basic.showNumber(game.score())
-    geschwindigkeit = 500
-    game.setScore(0)
+    spielStart()
     game.resume()
+}
+function neuesHindernis () {
+    hindernis = game.createSprite(randint(0, 4), 0)
+    hindernis.set(LedSpriteProperty.Brightness, 10)
 }
 input.onButtonEvent(Button.B, input.buttonEventClick(), function () {
     auto.change(LedSpriteProperty.X, 1)
@@ -19,14 +26,13 @@ let hindernis: game.LedSprite = null
 let geschwindigkeit = 0
 let auto: game.LedSprite = null
 auto = game.createSprite(2, 4)
-geschwindigkeit = 500
-game.setScore(0)
+spielStart()
 basic.forever(function () {
-    hindernis = game.createSprite(randint(0, 4), 0)
-    basic.pause(geschwindigkeit)
+    neuesHindernis()
+    basic.pause(500 - geschwindigkeit)
     while (hindernis.get(LedSpriteProperty.Y) < 4) {
         hindernis.change(LedSpriteProperty.Y, 1)
-        basic.pause(geschwindigkeit)
+        basic.pause(500 - geschwindigkeit)
     }
     if (auto.isTouching(hindernis)) {
         spielende()
@@ -34,7 +40,7 @@ basic.forever(function () {
         game.pause()
         game.addScore(1)
         game.resume()
+        geschwindigkeit += 20
     }
     hindernis.delete()
-    geschwindigkeit += -20
 })
