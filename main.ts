@@ -27,13 +27,14 @@ basic.forever(function () {
     while (hindernis.get(LedSpriteProperty.Y) < 4) {
         hindernis.change(LedSpriteProperty.Y, 1)
         basic.pause(geschwindigkeit)
-        if (auto.isTouching(hindernis)) {
-            spielende()
-        }
+    }
+    if (auto.isTouching(hindernis)) {
+        spielende()
+    } else {
+        game.pause()
+        game.addScore(1)
+        game.resume()
     }
     hindernis.delete()
-    game.pause()
-    game.addScore(1)
-    game.resume()
     geschwindigkeit += -20
 })
